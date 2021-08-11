@@ -1,20 +1,13 @@
-const db = require('./db/postgres')
-
 const express = require('express')
+const userRouter = require('./routes/user.routes')
 const app = express()
-const port = 3000
+const PORT = process.env.PORT || 8080
+const db = require('./db')
 
-// app.use((err, req, res, next) => {
-//     console.log(err.stack);
-//     res.status(500).send('Smth broke!')
-// });
+app.use(express.json())
+app.use('/api', userRouter)
 
-db.sync();
-
-app.get('/', function (req, res) {
-    res.send('Hello World');
-  });
-
-app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`)
+app.listen(PORT, () => {
+    console.log(`server started on port ${PORT}`)
 })
+
