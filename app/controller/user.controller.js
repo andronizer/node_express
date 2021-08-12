@@ -7,7 +7,6 @@ class UserController {
             const user = await User.create({ name, description })        
             return res.json(user)
           } catch (err) {
-            console.log(err)
             return res.status(500).json(err)
           }
     }
@@ -16,7 +15,6 @@ class UserController {
             const users = await User.findAll()        
             return res.json(users)
           } catch (err) {
-            console.log(err)
             return res.status(500).json({ error: 'Something went wrong' })
           }
     }
@@ -29,7 +27,6 @@ class UserController {
       
           return res.json(user)
         } catch (err) {
-          console.log(err)
           return res.status(500).json({ error: 'Something went wrong' })
         }    
     }
@@ -46,7 +43,6 @@ class UserController {
       
           return res.json(user)
         } catch (err) {
-          console.log(err)
           return res.status(500).json({ error: 'Something went wrong' })
         }    
     }

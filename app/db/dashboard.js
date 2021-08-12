@@ -1,16 +1,17 @@
 const { Model } = require('sequelize')
 
 module.exports = (sequelize, DataTypes) => {
-   
-  class User extends Model { 
-    static associate({ Dashboard }) {       
-        this.hasMany(Dashboard, { foreignKey: 'ownerId', as: 'dashboards' })
+  class Dashboard extends Model {
+
+    static associate({ User }) {       
+        this.belongsTo(User, { foreignKey: 'ownerId', as: 'user' })
       }
+
     toJSON() {
       return { ...this.get(), id: undefined }
     }
   }
-  User.init(
+  Dashboard.init(
     {
       id: {
         type: DataTypes.INTEGER,
@@ -36,10 +37,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      tableName: 'users',
-      modelName: 'User',
+      tableName: 'dashboards',
+      modelName: 'Dashboard',
     }
   )
-  return User
+  return Dashboard
 }
 
