@@ -1,21 +1,21 @@
 const { Model } = require('sequelize')
 
 module.exports = (sequelize, DataTypes) => {
-  class Dashboard extends Model {
-
-    static associate({ User }) {       
-        this.belongsTo(User, { foreignKey: 'ownerId', as: 'user' })
-      }
-
-    static associate({ Task }) {       
-        this.hasMany(Task, { foreignKey: 'boardId', as: 'tasks' })
+   
+  class Task extends Model { 
+    static associate({ Dashboard }) {       
+        this.belongsTo(Dashboard, { foreignKey: 'boardId', as: 'board' })
       }   
 
+    static associate({ User }) {       
+        this.belongsToMany(User, { through: "UserTask", timestamps: false })
+      }  
+   
     toJSON() {
       return { ...this.get() }
     }
   }
-  Dashboard.init(
+  Task.init(
     {
       id: {
         type: DataTypes.INTEGER,
@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         allowNull: false
       },
-      name: {
+      title: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -42,11 +42,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      tableName: 'dashboards',
-      modelName: 'Dashboard',
+      tableName: 'tasks',
+      modelName: 'Task',
       timestamps: false
     }
   )
-  return Dashboard
+  return Task
 }
 

@@ -5,9 +5,14 @@ module.exports = (sequelize, DataTypes) => {
   class User extends Model { 
     static associate({ Dashboard }) {       
         this.hasMany(Dashboard, { foreignKey: 'ownerId', as: 'dashboards' })
-      }
+      }   
+
+    static associate({ Task }) {       
+        this.belongsToMany(Task, { through: "UserTask", timestamps: false })
+      }  
+    
     toJSON() {
-      return { ...this.get(), id: undefined }
+      return { ...this.get() }
     }
   }
   User.init(
@@ -16,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
+        allowNull: false
       },
       name: {
         type: DataTypes.STRING,
@@ -38,6 +44,7 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       tableName: 'users',
       modelName: 'User',
+      timestamps: false
     }
   )
   return User
