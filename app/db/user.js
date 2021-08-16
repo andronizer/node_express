@@ -3,13 +3,11 @@ const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
    
   class User extends Model { 
-    static associate({ Dashboard }) {       
-        this.hasMany(Dashboard, { foreignKey: 'ownerId', as: 'dashboards' })
-      }   
-
-    static associate({ Task }) {       
-        this.belongsToMany(Task, { through: "UserTask", timestamps: false })
-      }  
+    static associate({ Task, Dashboard }) {
+      this.belongsToMany(Task, { through: "UserTask" });
+      this.hasMany(Dashboard, { foreignKey: "ownerId", as: "dashboards" });
+      this.belongsToMany(Dashboard, { through: "JoinedUsers" });
+    } 
     
     toJSON() {
       return { ...this.get() }
@@ -31,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: { msg: 'Name must not be empty' },
         },
       },
-      description: {
+      email: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -39,12 +37,19 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: { msg: 'email must not be empty' },
         },
       },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: { msg: 'User must have a name' },
+          notEmpty: { msg: 'Name must not be empty' },
+        },
+      },
     },
     {
       sequelize,
       tableName: 'users',
-      modelName: 'User',
-      timestamps: false
+      modelName: 'User'
     }
   )
   return User

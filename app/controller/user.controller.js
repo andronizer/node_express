@@ -1,11 +1,22 @@
-const { User } = require('../db')
+const { User } = require('../db');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken')
+const dotenv = require("dotenv");
+dotenv.config();
+
+const jwtGenerator = (id, name, email, password) => {
+    return jwt.sign({id, name, email, password}, process.env.SECRET_TOKEN, {expiresIn:'1800s'})
+}
 
 class UserController {
-    async createUser(req, res) {
-        const {name, description} = req.body
+    async createUser(req, res) {        
+        const {name, email, password} = req.body
+        const hashedPassword = await bcrypt.hash(password, 8)
         try {
-            const user = await User.create({ name, description })        
-            return res.json(user)
+            const user = await User.create({ name, email, password: hashedPassword })  
+            const token = jwtGenerator(user.id, user.name, user.email, user.password)
+            return res.json({token}
+          )
           } catch (err) {
             return res.status(500).json(err)
           }
@@ -32,12 +43,13 @@ class UserController {
     }
     async updateUser(req, res) {
         const id = req.params.id
-        const { name, description } = req.body
+        const { name, email, password } = req.body
         try {
           const user = await User.findOne({ where: { id } })
       
           user.name = name
-          user.description = description
+          user.email = email
+          user.password = password
       
           await user.save()
       

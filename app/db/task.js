@@ -3,13 +3,10 @@ const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
    
   class Task extends Model { 
-    static associate({ Dashboard }) {       
-        this.belongsTo(Dashboard, { foreignKey: 'boardId', as: 'board' })
-      }   
-
-    static associate({ User }) {       
-        this.belongsToMany(User, { through: "UserTask", timestamps: false })
-      }  
+    static associate({ User, Dashboard }) {
+      this.belongsToMany(User, { through: "UserTask" });
+      this.belongsTo(Dashboard, { foreignKey: "boardId", as: "board" });
+    }
    
     toJSON() {
       return { ...this.get() }
@@ -31,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: { msg: 'Name must not be empty' },
         },
       },
-      description: {
+      contents: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -43,8 +40,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       tableName: 'tasks',
-      modelName: 'Task',
-      timestamps: false
+      modelName: 'Task'
     }
   )
   return Task
