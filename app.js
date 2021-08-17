@@ -1,7 +1,8 @@
 const express = require('express')
 const userRouter = require('./app/routes/user.routes')
 const app = express()
-const PORT = process.env.PORT || 8080
+const config = require('./config/config')
+const PORT = config.port || 8080
 const db = require('./app/db')
 
 app.use(express.json())

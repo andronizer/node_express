@@ -1,11 +1,11 @@
-const { User } = require('../db');
-const bcrypt = require('bcrypt');
+const { User } = require('../db')
+const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const dotenv = require("dotenv");
-dotenv.config();
+const dotenv = require("dotenv")
+dotenv.config()
 
 const jwtGenerator = (id, name, email, password) => {
-    return jwt.sign({id, name, email, password}, process.env.SECRET_TOKEN, {expiresIn:'1800s'})
+    return jwt.sign({id, name, email, password}, process.env.SECRET_TOKEN, {expiresIn:'24h'})
 }
 
 class UserController {
@@ -17,7 +17,7 @@ class UserController {
             const token = jwtGenerator(user.id, user.name, user.email, user.password)
             return res.json({token}
           )
-          } catch (err) {
+        } catch (err) {
             return res.status(500).json(err)
           }
     }
@@ -47,9 +47,7 @@ class UserController {
         try {
           const user = await User.findOne({ where: { id } })
       
-          user.name = name
-          user.email = email
-          user.password = password
+          Object.assign(user, { name, email, password })
       
           await user.save()
       

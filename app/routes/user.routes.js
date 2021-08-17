@@ -10,10 +10,11 @@ router.get('/user/:id', userController.getOneUser)
 router.put('/user/:id', userController.updateUser)
 router.delete('/user/:id', userController.deleteUser)
 
-router.post('/dashboard', async (req, res) => {
+router.post('/dashboard/:ownderId', async (req, res) => {
+    const ownerId = req.params.ownerId
     const {title, tasks} = req.body
     try {
-        const dashboards = await Dashboard.create({ title, tasks, 'ownerId': 1 })        
+        const dashboards = await Dashboard.create({ title, tasks, ownderId })        
         return res.json(dashboards)
       } catch (err) {
         return res.status(500).json(err)
@@ -23,7 +24,7 @@ router.post('/dashboard', async (req, res) => {
 router.post('/task', async (req, res) => {
   const {title, contents} = req.body
   try {
-      const tasks = await Task.create({ title, contents, 'ownerId': 1 })        
+      const tasks = await Task.create({ title, contents })        
       return res.json(tasks)
     } catch (err) {
       return res.status(500).json(err)

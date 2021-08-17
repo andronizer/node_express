@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate({ Task, Dashboard }) {
       this.belongsToMany(Task, { through: "UserTask" });
       this.hasMany(Dashboard, { foreignKey: "ownerId", as: "dashboards" });
-      this.belongsToMany(Dashboard, { through: "JoinedUsers" });
+      // this.belongsToMany(Dashboard, { through: "JoinedUsers" });
     } 
     
     toJSON() {

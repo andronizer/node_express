@@ -1,17 +1,18 @@
 const fs = require('fs')
 const path = require('path')
 const basename = path.basename(__filename)
+const config = require('../../config/config')
 
 const db = {}
 
 const Sequelize = require('sequelize');
 const sequelize = new Sequelize( {
   dialect: "postgres",
-  host: "127.0.0.1",
-  port: "5432",
-  username: "postgres",
-  password: "spasenie2021" ,
-  database: "todo",
+  host: config.host,
+  port: config.dbPort,
+  username: config.username,
+  password: config.password,
+  database: config.database
 });
 
 fs.readdirSync(__dirname)

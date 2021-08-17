@@ -7,7 +7,9 @@
     "start": "node app.js",
     "dev": "nodemon app.js",
     "db:update": "node db_update.js",
-    "migrations:generate": "node ./node_modules/.bin/sequelize migration:generate --name $npm_config_first"
+    "migrations:generate": "node ./node_modules/.bin/sequelize migration:generate --name $npm_config_first",
+    "migrations:run": "node ./node_modules/.bin/sequelize db:migrate",
+    "migrations:undo": "node ./node_modules/.bin/sequelize db:migrate:undo"
   },
   "author": "",
   "license": "ISC",
