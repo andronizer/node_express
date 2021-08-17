@@ -12,7 +12,7 @@ router.delete('/user/:id', userController.deleteUser)
 
 router.post('/dashboard/:ownderId', async (req, res) => {
     const ownerId = req.params.ownerId
-    const {title, tasks} = req.body
+    const { title, tasks } = req.body
     try {
         const dashboards = await Dashboard.create({ title, tasks, ownderId })        
         return res.json(dashboards)
