@@ -1,13 +1,13 @@
 const { Model } = require('sequelize')
 
 module.exports = (sequelize, DataTypes) => {
-   
-  class Task extends Model { 
+
+  class Task extends Model {
     static associate({ User, Dashboard }) {
-      this.belongsToMany(User, { through: "UserTask" });
-      this.belongsTo(Dashboard, { foreignKey: "boardId", as: "board" });
+      this.belongsToMany(User, { through: 'UserTask' });
+      this.belongsTo(Dashboard, { foreignKey: 'boardId', as: 'board' });
     }
-   
+
     toJSON() {
       return { ...this.get() }
     }
@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
-        allowNull: false
+        allowNull: false,
       },
       title: {
         type: DataTypes.STRING,
@@ -40,8 +40,8 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       tableName: 'tasks',
-      modelName: 'Task'
-    }
+      modelName: 'Task',
+    },
   )
   return Task
 }

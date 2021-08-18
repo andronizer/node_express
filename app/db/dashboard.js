@@ -3,10 +3,10 @@ const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class Dashboard extends Model {
     static associate({ Task, User }) {
-      this.hasMany(Task, { foreignKey: "boardId" });
-      this.belongsTo(User, { foreignKey: "ownerId", onDelete: 'cascade' });
-      // this.belongsToMany(User, { through: "JoinedUsers" });
-    } 
+      this.hasMany(Task, { foreignKey: 'boardId' });
+      this.belongsTo(User, { foreignKey: 'ownerId', onDelete: 'cascade' });
+      this.belongsToMany(User, { through: 'JoinedUsers' });
+    }
 
     toJSON() {
       return { ...this.get() }
@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
-        allowNull: false
+        allowNull: false,
       },
       title: {
         type: DataTypes.STRING,
@@ -40,8 +40,8 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       tableName: 'dashboards',
-      modelName: 'Dashboard'
-    }
+      modelName: 'Dashboard',
+    },
   )
   return Dashboard
 }

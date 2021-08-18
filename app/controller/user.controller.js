@@ -1,29 +1,12 @@
 const { User } = require('../db')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const dotenv = require("dotenv")
-dotenv.config()
-
-const jwtGenerator = (id, name, email, password) => {
-    return jwt.sign({id, name, email, password}, process.env.SECRET_TOKEN, {expiresIn:'24h'})
-}
+const config = require('../../config/config')
 
 class UserController {
-    async createUser(req, res) {        
-        const {name, email, password} = req.body
-        const hashedPassword = await bcrypt.hash(password, 8)
+    async getUsers(req, res) {
         try {
-            const user = await User.create({ name, email, password: hashedPassword })  
-            const token = jwtGenerator(user.id, user.name, user.email, user.password)
-            return res.json({token}
-          )
-        } catch (err) {
-            return res.status(500).json(err)
-          }
-    }
-    async getUsers(req, res) {        
-        try {
-            const users = await User.findAll()        
+            const users = await User.findAll()
             return res.json(users)
           } catch (err) {
             return res.status(500).json({ error: 'Something went wrong' })
@@ -33,41 +16,78 @@ class UserController {
         const id = req.params.id
         try {
           const user = await User.findOne({
-            where: { id }
+            where: { id },
           })
-      
+
           return res.json(user)
         } catch (err) {
           return res.status(500).json({ error: 'Something went wrong' })
-        }    
+        }
     }
     async updateUser(req, res) {
         const id = req.params.id
         const { name, email, password } = req.body
         try {
           const user = await User.findOne({ where: { id } })
-      
+
           Object.assign(user, { name, email, password })
-      
+
           await user.save()
-      
+
           return res.json(user)
         } catch (err) {
           return res.status(500).json({ error: 'Something went wrong' })
-        }    
+        }
     }
     async deleteUser(req, res) {
         const id = req.params.id
         try {
           const user = await User.findOne({ where: { id } })
-      
+
           await user.destroy()
-      
+
           return res.json({ message: 'User deleted!' })
         } catch (err) {
           console.log(err)
           return res.status(500).json({ error: 'Something went wrong' })
-        }    
+        }
+    }
+    async userRegistration(req, res) {
+      const { name, email, password } = req.body;
+
+      const userAlreadyExists = await User.findOne({ where: { email } })
+        .catch(err => console.log('Error', err));
+
+      if (userAlreadyExists) {
+        return res.json({ message: 'User already exists' });
+      }
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const newUser = await User.create({
+        name: name,
+        email: email,
+        password: hashedPassword,
+      });
+      console.log(newUser);
+      if (newUser) {
+        return res.json({ message: 'Registered' });
+      }
+      return res.json(newUser);
+    }
+    async userLogin(req, res) {
+      const { email, password } = req.body;
+      const user = await User.findOne({ where: { email } })
+        .catch(err => console.log('Error', err));
+      if (!user) {
+        return res.json({ message: 'Email or password doesn\'t match' });
+      }
+      if (await bcrypt.compare(password, user.password)) {
+        const jwtToken = jwt.sign({
+          id: user.id,
+          email: user.email,
+        }, config.secret, { expiresIn: '2h' });
+        return res.json({ message: 'Welcome!', token: jwtToken });
+      }
+      return res.send('Try again');
     }
 }
 
