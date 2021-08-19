@@ -4,6 +4,74 @@ const jwt = require('jsonwebtoken')
 const config = require('../../config/config')
 
 class UserController {
+  async registerUser(req, res) {
+    try {
+      const { name, email, password } = req.body;
+      if (!(email && password && name)) {
+        res.status(400).send('All input is required');
+      }
+
+      const oldUser = await User.findOne({
+        where: { email },
+      })
+      if (oldUser) {
+        return res.status(409).send('User Already Exist. Please Login');
+      }
+
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+    const user = await User.create({
+      name,
+      email: email.toLowerCase(),
+      password: hashedPassword,
+    });
+
+    const token = jwt.sign(
+      { user_id: user._id, email },
+      config.secret,
+      {
+        expiresIn: '2h',
+      },
+    );
+    user.token = token;
+
+    console.log(user.token)
+
+    res.status(201).json(user);
+  } catch (err) {
+    console.log(err);
+  }
+};
+    async loginUser(req, res) {
+      try {
+        const { email, password } = req.body;
+        if (!(email && password)) {
+          res.status(400).send('All input is required');
+        }
+
+        const user = await User.findOne({
+          where: { email },
+        })
+
+        if (user && (await bcrypt.compare(password, user.password))) {
+          const token = jwt.sign(
+            { user_id: user._id, email },
+            config.secret,
+            {
+              expiresIn: '2h',
+            },
+          );
+
+          user.token = token;
+
+          res.status(200).json(user);
+        }
+        res.status(400).send('Invalid Credentials');
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
     async getUsers(req, res) {
         try {
             const users = await User.findAll()
@@ -51,43 +119,6 @@ class UserController {
           console.log(err)
           return res.status(500).json({ error: 'Something went wrong' })
         }
-    }
-    async userRegistration(req, res) {
-      const { name, email, password } = req.body;
-
-      const userAlreadyExists = await User.findOne({ where: { email } })
-        .catch(err => console.log('Error', err));
-
-      if (userAlreadyExists) {
-        return res.json({ message: 'User already exists' });
-      }
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const newUser = await User.create({
-        name: name,
-        email: email,
-        password: hashedPassword,
-      });
-      console.log(newUser);
-      if (newUser) {
-        return res.json({ message: 'Registered' });
-      }
-      return res.json(newUser);
-    }
-    async userLogin(req, res) {
-      const { email, password } = req.body;
-      const user = await User.findOne({ where: { email } })
-        .catch(err => console.log('Error', err));
-      if (!user) {
-        return res.json({ message: 'Email or password doesn\'t match' });
-      }
-      if (await bcrypt.compare(password, user.password)) {
-        const jwtToken = jwt.sign({
-          id: user.id,
-          email: user.email,
-        }, config.secret, { expiresIn: '2h' });
-        return res.json({ message: 'Welcome!', token: jwtToken });
-      }
-      return res.send('Try again');
     }
 }
 

@@ -7,13 +7,17 @@ const config = require('./config/config')
 const PORT = config.port || 8080
 const db = require('./app/db')
 const cors = require('cors')
-
+const auth = require('./middleware/auth.middleware');
 
 app.use(express.json())
 app.use(cors())
 app.use('/api', userRouter)
 app.use('/api', dashboardRouter)
 app.use('/api', taskRouter)
+
+app.get('/welcome', auth, (req, res) => {
+    res.status(200).send('Welcome!');
+});
 
 const init = async () => {
     try {
@@ -22,7 +26,6 @@ const init = async () => {
         app.listen(PORT, async () => {
             console.log(`server started on port ${PORT}`)
         })
-    
     } catch (error) {
         console.log(error);
     }
