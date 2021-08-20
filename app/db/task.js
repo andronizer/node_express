@@ -1,7 +1,6 @@
-const { Model } = require('sequelize')
+const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-
   class Task extends Model {
     static associate({ User, Dashboard }) {
       this.belongsToMany(User, { through: 'UserTask' });
@@ -9,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     toJSON() {
-      return { ...this.get() }
+      return { ...this.get() };
     }
   }
   Task.init(
@@ -42,7 +41,6 @@ module.exports = (sequelize, DataTypes) => {
       tableName: 'tasks',
       modelName: 'Task',
     },
-  )
-  return Task
-}
-
+  );
+  return Task;
+};

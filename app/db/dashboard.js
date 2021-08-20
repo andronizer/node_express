@@ -1,4 +1,4 @@
-const { Model } = require('sequelize')
+const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class Dashboard extends Model {
@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     toJSON() {
-      return { ...this.get() }
+      return { ...this.get() };
     }
   }
   Dashboard.init(
@@ -42,7 +42,6 @@ module.exports = (sequelize, DataTypes) => {
       tableName: 'dashboards',
       modelName: 'Dashboard',
     },
-  )
-  return Dashboard
-}
-
+  );
+  return Dashboard;
+};
