@@ -12,7 +12,7 @@
     "db:seed:generate": "sequelize-cli seed:generate",
     "db:seed:all": "sequelize-cli db:seed:all",
     "db:seed:undo:all": "sequelize-cli db:seed:undo:all",
-    "lint": "eslint \"{app,config,migrations,middleware,migrations,seeders,utils}/**/*.js\" --fix"
+    "lint": "eslint \"{app,config,migrations,middleware,seeders,utils}/**/*.js\" --fix"
   },
   "author": "",
   "license": "ISC",
