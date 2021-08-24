@@ -1,11 +1,6 @@
-const { User } = require('../db');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const config = require('../../config/config');
-
-function generateToken(id, email) {
-  return jwt.sign({ id, email }, config.secret, { expiresIn: '2h' });
-}
+const { User } = require("../db");
+const bcrypt = require("bcrypt");
+const { bcryptHash, generateToken } = require("../../utils");
 
 class UserController {
   async registerUser(req, res) {
@@ -19,7 +14,7 @@ class UserController {
       //   return res.status(409)
       // }О
 
-      const hashedPassword = await bcrypt.hash(password, 10);
+      const hashedPassword = await bcryptHash(password);
 
       const user = await User.create({
         name,
@@ -58,7 +53,7 @@ class UserController {
       const users = await User.findAll();
       return res.json(users);
     } catch (err) {
-      return res.status(500).json({ error: 'Something went wrong' });
+      return res.status(500).json({ error: "Something went wrong" });
     }
   }
   async getOneUser(req, res) {
@@ -70,7 +65,7 @@ class UserController {
 
       return res.json(user);
     } catch (err) {
-      return res.status(500).json({ error: 'Something went wrong' });
+      return res.status(500).json({ error: "Something went wrong" });
     }
   }
   async updateUser(req, res) {
@@ -85,7 +80,7 @@ class UserController {
 
       return res.json(user);
     } catch (err) {
-      return res.status(500).json({ error: 'Something went wrong' });
+      return res.status(500).json({ error: "Something went wrong" });
     }
   }
   async deleteUser(req, res) {
@@ -95,10 +90,10 @@ class UserController {
 
       await user.destroy();
 
-      return res.json({ message: 'User deleted!' });
+      return res.json({ message: "User deleted!" });
     } catch (err) {
       console.log(err);
-      return res.status(500).json({ error: 'Something went wrong' });
+      return res.status(500).json({ error: "Something went wrong" });
     }
   }
 }

@@ -1,10 +1,10 @@
-const { Task } = require('../db');
+const { Task } = require("../db");
 
 class TaskController {
   async createTask(req, res) {
-    const { title, contents } = req.body;
+    const { title } = req.body;
     try {
-      const task = await Task.create({ title, contents });
+      const task = await Task.create({ title });
       return res.json(task);
     } catch (err) {
       return res.status(500).json(err);
@@ -15,7 +15,7 @@ class TaskController {
       const tasks = await Task.findAll();
       return res.json(tasks);
     } catch (err) {
-      return res.status(500).json({ error: 'Something went wrong' });
+      return res.status(500).json({ error: "Something went wrong" });
     }
   }
   async getOneTask(req, res) {
@@ -27,7 +27,7 @@ class TaskController {
 
       return res.json(task);
     } catch (err) {
-      return res.status(500).json({ error: 'Something went wrong' });
+      return res.status(500).json({ error: "Something went wrong" });
     }
   }
   async deleteTask(req, res) {
@@ -37,10 +37,10 @@ class TaskController {
 
       await task.destroy();
 
-      return res.json({ message: 'Task deleted!' });
+      return res.json({ message: "Task deleted!" });
     } catch (err) {
       console.log(err);
-      return res.status(500).json({ error: 'Something went wrong' });
+      return res.status(500).json({ error: "Something went wrong" });
     }
   }
 }

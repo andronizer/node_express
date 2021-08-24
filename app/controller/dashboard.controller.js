@@ -1,11 +1,11 @@
-const { Dashboard } = require('../db');
+const { Dashboard } = require("../db");
 
 class DashboardController {
   async createDashboard(req, res) {
     const ownerId = req.user.id;
-    const { title, tasks } = req.body;
+    const { title } = req.body;
     try {
-      const dashboard = await Dashboard.create({ title, tasks, ownerId });
+      const dashboard = await Dashboard.create({ title, ownerId });
       return res.json(dashboard);
     } catch (err) {
       return res.status(500).json(err);
@@ -16,7 +16,7 @@ class DashboardController {
       const dashboards = await Dashboard.findAll();
       return res.json(dashboards);
     } catch (err) {
-      return res.status(500).json({ error: 'Something went wrong' });
+      return res.status(500).json({ error: "Something went wrong" });
     }
   }
   async getOneDashboard(req, res) {
@@ -28,7 +28,7 @@ class DashboardController {
 
       return res.json(dashboard);
     } catch (err) {
-      return res.status(500).json({ error: 'Something went wrong' });
+      return res.status(500).json({ error: "Something went wrong" });
     }
   }
   async deleteDashboard(req, res) {
@@ -38,10 +38,10 @@ class DashboardController {
 
       await dashboard.destroy();
 
-      return res.json({ message: 'Dashboard deleted!' });
+      return res.json({ message: "Dashboard deleted!" });
     } catch (err) {
       console.log(err);
-      return res.status(500).json({ error: 'Something went wrong' });
+      return res.status(500).json({ error: "Something went wrong" });
     }
   }
 }

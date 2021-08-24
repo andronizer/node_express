@@ -1,13 +1,13 @@
-const fs = require('fs')
-const path = require('path')
+const fs = require("fs")
+const path = require("path")
 const basename = path.basename(__filename)
-const config = require('../../config/config')
+const config = require("../../config/config")
 
 const db = {}
 
-const Sequelize = require('sequelize');
+const Sequelize = require("sequelize");
 const sequelize = new Sequelize({
-  dialect: 'postgres',
+  dialect: "postgres",
   host: config.host,
   port: config.dbPort,
   username: config.username,
@@ -17,7 +17,7 @@ const sequelize = new Sequelize({
 
 fs.readdirSync(__dirname)
   .filter(file => (
-      file.indexOf('.') !== 0 && file !== basename && file.slice(-3) === '.js'
+      file.indexOf(".") !== 0 && file !== basename && file.slice(-3) === ".js"
     ))
   .forEach(file => {
     const model = require(path.join(__dirname, file))(

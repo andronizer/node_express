@@ -1,11 +1,11 @@
-const { Model } = require('sequelize');
+const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
   class Dashboard extends Model {
     static associate({ Task, User }) {
-      this.hasMany(Task, { foreignKey: 'boardId' });
-      this.belongsTo(User, { foreignKey: 'ownerId', onDelete: 'cascade' });
-      this.belongsToMany(User, { through: 'JoinedUsers' });
+      this.hasMany(Task, { foreignKey: "boardId" });
+      this.belongsTo(User, { foreignKey: "ownerId", onDelete: "cascade" });
+      this.belongsToMany(User, { through: "JoinedUsers" });
     }
 
     toJSON() {
@@ -24,23 +24,15 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notNull: { msg: 'User must have a name' },
-          notEmpty: { msg: 'Name must not be empty' },
-        },
-      },
-      tasks: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          notNull: { msg: 'User must have a email' },
-          notEmpty: { msg: 'email must not be empty' },
+          notNull: { msg: "Dashboard must have a title" },
+          notEmpty: { msg: "Title must not be empty" },
         },
       },
     },
     {
       sequelize,
-      tableName: 'dashboards',
-      modelName: 'Dashboard',
+      tableName: "dashboards",
+      modelName: "Dashboard",
     },
   );
   return Dashboard;
