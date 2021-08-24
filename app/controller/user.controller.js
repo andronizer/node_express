@@ -1,18 +1,6 @@
-<<<<<<< HEAD
 const { User } = require("../db");
 const bcrypt = require("bcrypt");
 const { bcryptHash, generateToken } = require("../../utils");
-=======
-const { User } = require('../db');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const config = require('../../config/config');
-const { bcryptHash } = require('../../utils');
-
-function generateToken(id, email) {
-  return jwt.sign({ id, email }, config.secret, { expiresIn: '2h' });
-}
->>>>>>> 369d526dc50e0d910f36170ef1e5787bf885e8c8
 
 class UserController {
   async registerUser(req, res) {
@@ -24,7 +12,7 @@ class UserController {
       // });
       // if (existingUser) {
       //   return res.status(409)
-      // }О
+      // }
 
       const hashedPassword = await bcryptHash(password);
 
