@@ -9,6 +9,9 @@
     "migrations:generate": "node ./node_modules/.bin/sequelize migration:generate --name $npm_config_first",
     "migrations:run": "node ./node_modules/.bin/sequelize db:migrate",
     "migrations:undo": "node ./node_modules/.bin/sequelize db:migrate:undo",
+    "db:seed:generate": "sequelize-cli seed:generate",
+    "db:seed:all": "sequelize-cli db:seed:all",
+    "db:seed:undo:all": "sequelize-cli db:seed:undo:all",
     "lint": "eslint \"{app,config,migrations}/**/*.js\" --fix"
   },
   "author": "",
