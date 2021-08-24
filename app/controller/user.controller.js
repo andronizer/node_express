@@ -2,6 +2,7 @@ const { User } = require('../db');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const config = require('../../config/config');
+const { bcryptHash } = require('../../utils');
 
 function generateToken(id, email) {
   return jwt.sign({ id, email }, config.secret, { expiresIn: '2h' });
@@ -19,7 +20,7 @@ class UserController {
       //   return res.status(409)
       // }О
 
-      const hashedPassword = await bcrypt.hash(password, 10);
+      const hashedPassword = await bcryptHash(password);
 
       const user = await User.create({
         name,
