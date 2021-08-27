@@ -37,6 +37,10 @@ class UserController {
         where: { email },
       });
 
+      if (!user) {
+        return res.status(400).json({ message: "Incorrect" });
+      }
+
       if (user && (await bcrypt.compare(password, user.password))) {
         const token = generateToken(user.id, user.email);
 

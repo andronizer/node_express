@@ -13,7 +13,7 @@ const verifyToken = (req, res, next) => {
     const decoded = jwt.verify(token, config.secret);
     req.user = decoded;
   } catch (err) {
-    return res.status(401);
+    return res.status(401).json();
   }
   return next();
 };
