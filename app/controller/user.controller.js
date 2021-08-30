@@ -27,6 +27,7 @@ class UserController {
       res.status(201).json({ user, token });
     } catch (err) {
       console.log(err);
+      return res.status(500).json({ error: "Something went wrong" });
     }
   }
   async loginUser(req, res) {
@@ -46,9 +47,10 @@ class UserController {
 
         return res.status(201).json({ token });
       }
-      res.status(400);
+      return res.status(400).json();
     } catch (err) {
       console.log(err);
+      return res.status(500).json({ error: "Something went wrong" });
     }
   }
 

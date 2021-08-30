@@ -6,7 +6,7 @@ const verifyToken = (req, res, next) => {
   const token = authHeader && authHeader.split(" ")[1];
 
   if (!token) {
-    return res.status(401);
+    return res.status(401).json();
   }
 
   try {

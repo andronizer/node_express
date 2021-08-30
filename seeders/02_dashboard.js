@@ -1,8 +1,9 @@
 "use strict";
+const { Dashboard } = require("../app/db/index");
 
 module.exports = {
-  up: async (queryInterface, Sequelize) =>
-    queryInterface.bulkInsert("dashboards", [
+  up: async (queryInterface, Sequelize) => {
+    await queryInterface.bulkInsert("dashboards", [
       {
         id: 1,
         title: "dashboard1",
@@ -38,8 +39,15 @@ module.exports = {
         updatedAt: new Date(),
         ownerId: 1,
       },
-    ]),
+    ]);
 
+    const existingDashboards = await Dashboard.count();
+    await queryInterface.sequelize.query(
+      `ALTER SEQUENCE "dashboards_id_seq" RESTART WITH ${
+        existingDashboards + 1
+      }`,
+    );
+  },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.bulkDelete("dashboards", null, {});
   },

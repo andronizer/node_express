@@ -1,9 +1,10 @@
 "use strict";
 const { bcryptHash } = require("../utils");
+const { User } = require("../app/db/index");
 
 module.exports = {
-  up: async (queryInterface, Sequelize) =>
-    queryInterface.bulkInsert("users", [
+  up: async (queryInterface, Sequelize) => {
+    await queryInterface.bulkInsert("users", [
       {
         id: 1,
         name: "andrey",
@@ -44,8 +45,12 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
-    ]),
-
+    ]);
+    const existingUsers = await User.count();
+    await queryInterface.sequelize.query(
+      `ALTER SEQUENCE "users_id_seq" RESTART WITH ${existingUsers + 1}`
+    );
+  },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.bulkDelete("users", null, {});
   },
