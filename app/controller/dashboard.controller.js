@@ -19,6 +19,15 @@ class DashboardController {
       return res.status(500).json({ error: "Something went wrong" });
     }
   }
+  async getMyDashboards(req, res) {
+    const ownerId = req.user.id;
+    try {
+      const dashboards = await Dashboard.findAll({ where: { ownerId } });
+      return res.json(dashboards);
+    } catch (err) {
+      return res.status(500).json({ error: "Something went wrong" });
+    }
+  }
   async getOneDashboard(req, res) {
     const id = req.params.id;
     try {

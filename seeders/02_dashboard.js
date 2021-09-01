@@ -16,25 +16,60 @@ module.exports = {
         title: "dashboard2",
         createdAt: new Date(),
         updatedAt: new Date(),
-        ownerId: 4,
+        ownerId: 5,
       },
       {
         id: 3,
         title: "dashboard3",
         createdAt: new Date(),
         updatedAt: new Date(),
-        ownerId: 3,
+        ownerId: 4,
       },
       {
         id: 4,
         title: "dashboard4",
         createdAt: new Date(),
         updatedAt: new Date(),
-        ownerId: 2,
+        ownerId: 4,
       },
       {
         id: 5,
         title: "dashboard5",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        ownerId: 3,
+      },
+      {
+        id: 6,
+        title: "dashboard6",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        ownerId: 3,
+      },
+      {
+        id: 7,
+        title: "dashboard7",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        ownerId: 2,
+      },
+      {
+        id: 8,
+        title: "dashboard8",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        ownerId: 2,
+      },
+      {
+        id: 9,
+        title: "dashboard9",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        ownerId: 1,
+      },
+      {
+        id: 10,
+        title: "dashboard10",
         createdAt: new Date(),
         updatedAt: new Date(),
         ownerId: 1,
@@ -45,7 +80,7 @@ module.exports = {
     await queryInterface.sequelize.query(
       `ALTER SEQUENCE "dashboards_id_seq" RESTART WITH ${
         existingDashboards + 1
-      }`,
+      }`
     );
   },
   down: async (queryInterface, Sequelize) => {

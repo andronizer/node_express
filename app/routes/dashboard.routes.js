@@ -4,7 +4,8 @@ const dashboardController = require("../controller/dashboard.controller");
 const auth = require("../../middleware/auth.middleware");
 
 router.post("/dashboard", auth, dashboardController.createDashboard);
-router.get("/dashboard", dashboardController.getDashboards);
+router.get("/dashboard/all", dashboardController.getDashboards);
+router.get("/dashboard/", auth, dashboardController.getMyDashboards);
 router.get("/dashboard/:id", dashboardController.getOneDashboard);
 router.delete("/dashboard/:id", dashboardController.deleteDashboard);
 
