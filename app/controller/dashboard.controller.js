@@ -8,7 +8,7 @@ class DashboardController {
       const dashboard = await Dashboard.create({ title, ownerId });
       return res.json(dashboard);
     } catch (err) {
-      return res.status(500).json(err);
+      return res.status(500).json({ error: "Something went wrong" });
     }
   }
   async getDashboards(req, res) {
