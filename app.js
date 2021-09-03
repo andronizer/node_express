@@ -1,7 +1,9 @@
 const express = require("express");
 const userRouter = require("./app/routes/user.routes");
 const dashboardRouter = require("./app/routes/dashboard.routes");
+const columnRouter = require("./app/routes/column.routes");
 const taskRouter = require("./app/routes/task.routes");
+
 const app = express();
 const config = require("./config/config");
 const PORT = config.port || 8080;
@@ -12,6 +14,7 @@ app.use(express.json());
 app.use(cors());
 app.use("/api", userRouter);
 app.use("/api", dashboardRouter);
+app.use("/api", columnRouter);
 app.use("/api", taskRouter);
 
 const init = async () => {

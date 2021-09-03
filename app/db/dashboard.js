@@ -2,8 +2,8 @@ const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
   class Dashboard extends Model {
-    static associate({ Task, User }) {
-      this.hasMany(Task, { foreignKey: "boardId" });
+    static associate({ Column, User }) {
+      this.hasMany(Column, { foreignKey: "boardId" });
       this.belongsTo(User, { foreignKey: "ownerId", onDelete: "cascade" });
       this.belongsToMany(User, { through: "JoinedUsers" });
     }
@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       tableName: "dashboards",
       modelName: "Dashboard",
-    },
+    }
   );
   return Dashboard;
 };

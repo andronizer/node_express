@@ -1,17 +1,17 @@
 const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
-  class Task extends Model {
-    static associate({ User, Column }) {
-      this.belongsToMany(User, { through: "UserTask" });
-      this.belongsTo(Column, { foreignKey: "boardId" });
+  class Column extends Model {
+    static associate({ Dashboard, Task }) {
+      this.hasMany(Task, { foreignKey: "columnId" });
+      this.belongsTo(Dashboard, { foreignKey: "boardId" });
     }
 
     toJSON() {
       return { ...this.get() };
     }
   }
-  Task.init(
+  Column.init(
     {
       id: {
         type: DataTypes.INTEGER,
@@ -23,16 +23,16 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notNull: { msg: "Task must have a title" },
+          notNull: { msg: "Column must have a title" },
           notEmpty: { msg: "Title must not be empty" },
         },
       },
     },
     {
       sequelize,
-      tableName: "tasks",
-      modelName: "Task",
+      tableName: "columns",
+      modelName: "Column",
     }
   );
-  return Task;
+  return Column;
 };
