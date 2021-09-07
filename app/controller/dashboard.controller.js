@@ -13,7 +13,9 @@ class DashboardController {
   }
   async getDashboards(req, res) {
     try {
-      const dashboards = await Dashboard.findAll();
+      const dashboards = await Dashboard.findAll({
+        order: [["createdAt", "DESC"]],
+      });
       return res.json(dashboards);
     } catch (err) {
       return res.status(500).json({ error: "Something went wrong" });
