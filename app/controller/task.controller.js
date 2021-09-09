@@ -2,9 +2,10 @@ const { Task } = require("../db");
 
 class TaskController {
   async createTask(req, res) {
+    const columnId = req.params.columnId;
     const { title } = req.body;
     try {
-      const task = await Task.create({ title });
+      const task = await Task.create({ title, columnId });
       return res.json(task);
     } catch (err) {
       return res.status(500).json(err);
@@ -12,7 +13,8 @@ class TaskController {
   }
   async getTasks(req, res) {
     try {
-      const tasks = await Task.findAll();
+      const columnId = req.params.columnId;
+      const tasks = await Task.findAll({ where: { columnId } });
       return res.json(tasks);
     } catch (err) {
       return res.status(500).json({ error: "Something went wrong" });

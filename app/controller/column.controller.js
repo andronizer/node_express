@@ -13,7 +13,8 @@ class ColumnController {
   }
   async getColumns(req, res) {
     try {
-      const columns = await Column.findAll();
+      const boardId = req.params.boardId;
+      const columns = await Column.findAll({ where: { boardId } });
       return res.json(columns);
     } catch (err) {
       return res.status(500).json({ error: "Something went wrong" });
