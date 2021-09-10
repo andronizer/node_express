@@ -33,9 +33,7 @@ class DashboardController {
   async getOneDashboard(req, res) {
     const id = req.params.id;
     try {
-      const dashboard = await Dashboard.findOne({
-        where: { id },
-      });
+      const dashboard = await Dashboard.findByPk(id);
 
       return res.json(dashboard);
     } catch (err) {

@@ -65,9 +65,7 @@ class UserController {
   async getOneUser(req, res) {
     const id = req.params.id;
     try {
-      const user = await User.findOne({
-        where: { id },
-      });
+      const user = await User.findByPk(id);
 
       return res.json(user);
     } catch (err) {

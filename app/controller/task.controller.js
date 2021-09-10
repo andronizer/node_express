@@ -23,9 +23,7 @@ class TaskController {
   async getOneTask(req, res) {
     const id = req.params.id;
     try {
-      const task = await Task.findOne({
-        where: { id },
-      });
+      const task = await Task.findByPk(id);
 
       return res.json(task);
     } catch (err) {

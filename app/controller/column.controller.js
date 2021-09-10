@@ -23,9 +23,7 @@ class ColumnController {
   async getOneColumn(req, res) {
     const id = req.params.id;
     try {
-      const column = await Column.findOne({
-        where: { id },
-      });
+      const column = await Column.findByPk(id);
 
       return res.json(column);
     } catch (err) {
