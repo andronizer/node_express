@@ -3,6 +3,7 @@ const userRouter = require("./app/routes/user.routes");
 const dashboardRouter = require("./app/routes/dashboard.routes");
 const columnRouter = require("./app/routes/column.routes");
 const taskRouter = require("./app/routes/task.routes");
+const joinedUsersRouter = require("./app/routes/joinedUsers.routes");
 
 const app = express();
 const config = require("./config/config");
@@ -16,6 +17,7 @@ app.use("/api", userRouter);
 app.use("/api", dashboardRouter);
 app.use("/api", columnRouter);
 app.use("/api", taskRouter);
+app.use("/api", joinedUsersRouter);
 
 const init = async () => {
   try {

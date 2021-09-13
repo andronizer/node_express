@@ -72,6 +72,7 @@ class UserController {
       return res.status(500).json({ error: "Something went wrong" });
     }
   }
+
   async updateUser(req, res) {
     const id = req.params.id;
     const { name, email, password } = req.body;
