@@ -1,4 +1,5 @@
 const { Dashboard } = require("../db");
+const { Op } = require("sequelize");
 
 class DashboardController {
   async createDashboard(req, res) {
@@ -22,9 +23,12 @@ class DashboardController {
     }
   }
   async getMyDashboards(req, res) {
+    const boardId = req.body;
     const ownerId = req.user.id;
     try {
-      const dashboards = await Dashboard.findAll({ where: { ownerId } });
+      const dashboards = await Dashboard.findAll({
+        where: { [Op.or]: { ownerId, id: boardId } },
+      });
       return res.json(dashboards);
     } catch (err) {
       return res.status(500).json({ error: "Something went wrong" });

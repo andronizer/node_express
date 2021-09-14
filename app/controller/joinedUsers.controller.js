@@ -41,6 +41,28 @@ class JoinedUsersController {
       return res.status(500).json({ error: "Something went wrong" });
     }
   }
+  async getJoinedUser(req, res) {
+    const UserId = req.user.id;
+    try {
+      const joinedUser = await JoinedUsers.findOne({
+        where: { UserId: UserId },
+      });
+      return res.json({ joinedUser });
+    } catch (err) {
+      return res.status(500).json({ error: "Something went wrong" });
+    }
+  }
+  async getMyJoinedBoards(req, res) {
+    try {
+      const joinedBoards = await JoinedUsers.findAll({
+        where: { UserId: req.user.id },
+      });
+      const joinedBoardsId = joinedBoards.map((el) => el.DashboardId);
+      return res.json(joinedBoardsId);
+    } catch (err) {
+      return res.status(500).json({ error: "Something went wrong" });
+    }
+  }
   async deleteJoinedUser(req, res) {
     const DashboardId = req.body.DashboardId;
     const UserId = req.user.id;
