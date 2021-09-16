@@ -1,4 +1,4 @@
-const { Dashboard } = require("../db");
+const { Dashboard, JoinedUsers } = require("../db");
 const { Op } = require("sequelize");
 
 class DashboardController {
@@ -13,23 +13,22 @@ class DashboardController {
     }
   }
   async getDashboards(req, res) {
+    const userId = req.user.id;
     try {
       const dashboards = await Dashboard.findAll({
-        order: [["createdAt", "DESC"]],
+        order: [["updatedAt", "DESC"]],
       });
-      return res.json(dashboards);
-    } catch (err) {
-      return res.status(500).json({ error: "Something went wrong" });
-    }
-  }
-  async getMyDashboards(req, res) {
-    const boardId = req.body;
-    const ownerId = req.user.id;
-    try {
-      const dashboards = await Dashboard.findAll({
-        where: { [Op.or]: { ownerId, id: boardId } },
+      const userDashboards = await JoinedUsers.findAll({
+        where: { UserId: userId },
       });
-      return res.json(dashboards);
+      const currentDashboards = dashboards.map((dashboard) => {
+        const isJoined = userDashboards.find(
+          (el) => el.DashboardId === dashboard.id
+        );
+        const result = { ...dashboard.toJSON(), joined: !!isJoined };
+        return result;
+      });
+      return res.json(currentDashboards);
     } catch (err) {
       return res.status(500).json({ error: "Something went wrong" });
     }
