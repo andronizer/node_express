@@ -7,7 +7,7 @@ class DashboardController {
     const { title } = req.body;
     try {
       const dashboard = await Dashboard.create({ title, ownerId });
-      return res.json(dashboard);
+      return res.json({ ...dashboard.toJSON(), joined: true });
     } catch (err) {
       return res.status(500).json({ error: "Something went wrong" });
     }
