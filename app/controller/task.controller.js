@@ -8,7 +8,8 @@ class TaskController {
       const task = await Task.create({ title, columnId });
       return res.json(task);
     } catch (err) {
-      return res.status(500).json(err);
+      console.log("err: ", err);
+      return res.status(500).json({ error: "Column doesn't exist" });
     }
   }
   async getTasks(req, res) {

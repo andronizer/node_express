@@ -8,7 +8,7 @@ class ColumnController {
       const column = await Column.create({ title, boardId });
       return res.json(column);
     } catch (err) {
-      return res.status(500).json({ error: "Something went wrong" });
+      return res.status(500).json({ error: "Dashboard doesn't exist" });
     }
   }
   async getColumns(req, res) {

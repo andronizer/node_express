@@ -1,12 +1,12 @@
 const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
-  class JoinedUsers extends Model {
+  class UserDashboard extends Model {
     toJSON() {
       return { ...this.get() };
     }
   }
-  JoinedUsers.init(
+  UserDashboard.init(
     {
       id: {
         type: DataTypes.INTEGER,
@@ -17,9 +17,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      tableName: "JoinedUsers",
-      modelName: "JoinedUsers",
+      tableName: "user_dashboard",
+      modelName: "UserDashboard",
     }
   );
-  return JoinedUsers;
+  return UserDashboard;
 };
