@@ -46,7 +46,6 @@ class DashboardController {
         };
         return result;
       });
-      console.log("currentDashboards: ", currentDashboards);
       return res.json(currentDashboards);
     } catch (err) {
       return res.status(500).json({ error: "Something went wrong" });
