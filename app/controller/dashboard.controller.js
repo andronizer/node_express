@@ -30,12 +30,10 @@ class DashboardController {
           },
         },
       });
-      console.log("dashboards: ", dashboards);
 
       const userDashboards = await UserDashboard.findAll({
         where: { UserId: userId },
       });
-      console.log("userDashboards: ", userDashboards);
 
       const currentDashboards = dashboards.map((dashboard) => {
         const isJoined = userDashboards.find(
@@ -84,7 +82,6 @@ class DashboardController {
       const userDashboard = await UserDashboard.count({
         where: { DashboardId: dashboardId, UserId: userId },
       });
-      console.log("userDashboard: ", userDashboard);
       if (userDashboard > 0) {
         return res.json(true);
       }
