@@ -6,7 +6,8 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(Column, { foreignKey: "boardId", as: "columns" });
       this.belongsTo(User, { foreignKey: "ownerId", onDelete: "cascade" });
       this.belongsToMany(User, {
-        foreignKey: "userId",
+        // foreignKey: "userId",
+        // otherKey: "dashboardId",
         through: "UserDashboard",
       });
     }

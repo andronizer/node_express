@@ -7,10 +7,10 @@ class DashboardController {
     try {
       const dashboard = await Dashboard.create({ title, ownerId });
       await UserDashboard.create({
-        dashboardId: dashboard.id,
-        userId: ownerId,
+        DashboardId: dashboard.id,
+        UserId: ownerId,
       });
-      return res.json({ ...dashboard.toJSON(), joined: true });
+      return res.json({ ...dashboard.toJSON(), joined: true, isOwner: true });
     } catch (err) {
       console.log(err);
       return res.status(500).json({ error: "Something went wrong" });
@@ -30,18 +30,25 @@ class DashboardController {
           },
         },
       });
+      console.log("dashboards: ", dashboards);
 
       const userDashboards = await UserDashboard.findAll({
-        where: { userId },
+        where: { UserId: userId },
       });
+      console.log("userDashboards: ", userDashboards);
 
       const currentDashboards = dashboards.map((dashboard) => {
         const isJoined = userDashboards.find(
-          (el) => el.dashboardId === dashboard.id
+          (el) => el.DashboardId === dashboard.id
         );
-        const result = { ...dashboard.toJSON(), joined: !!isJoined };
+        const result = {
+          ...dashboard.toJSON(),
+          joined: !!isJoined,
+          isOwner: dashboard.ownerId === userId,
+        };
         return result;
       });
+      console.log("currentDashboards: ", currentDashboards);
       return res.json(currentDashboards);
     } catch (err) {
       return res.status(500).json({ error: "Something went wrong" });
@@ -75,14 +82,15 @@ class DashboardController {
     const userId = req.user.id;
     try {
       const userDashboard = await UserDashboard.count({
-        where: { dashboardId, userId },
+        where: { DashboardId: dashboardId, UserId: userId },
       });
+      console.log("userDashboard: ", userDashboard);
       if (userDashboard > 0) {
         return res.json(true);
       }
       const newUserDashboard = await UserDashboard.create({
-        dashboardId,
-        userId,
+        DashboardId: dashboardId,
+        UserId: userId,
       });
       return res.json(newUserDashboard);
     } catch (err) {
@@ -94,12 +102,12 @@ class DashboardController {
     const userId = req.user.id;
     try {
       const joinedUser = await UserDashboard.count({
-        where: { dashboardId, userId },
+        where: { DashboardId: dashboardId, UserId: userId },
       });
 
       if (joinedUser > 0) {
         UserDashboard.destroy({
-          where: { dashboardId, userId },
+          where: { DashboardId: dashboardId, UserId: userId },
         });
       }
       return res.json({ message: "Unjoined!" });
